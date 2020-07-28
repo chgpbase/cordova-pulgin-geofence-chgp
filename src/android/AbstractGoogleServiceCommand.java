@@ -64,7 +64,7 @@ public abstract class AbstractGoogleServiceCommand implements
     }
 
     public void addListener(IGoogleServiceCommandListener listener) {
-        listeners.add(listener);
+       if(listener!=null) listeners.add(listener);
     }
 
     public void Execute() {
