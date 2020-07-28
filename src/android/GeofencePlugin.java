@@ -129,8 +129,8 @@ public class GeofencePlugin extends CordovaPlugin {
         Log.d(TAG, "GeofencePlugin execute action: " + action + " args: " + args.toString());
         executedAction = new Action(action, args, callbackContext);
 
-      //  cordova.getThreadPool().execute(new Runnable() {
-//	    public void run() {
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
                 if (action.equals("addOrUpdate")) {
                     List<GeoNotification> geoNotifications = new ArrayList<GeoNotification>();
                     for (int i = 0; i < args.length(); i++) {
