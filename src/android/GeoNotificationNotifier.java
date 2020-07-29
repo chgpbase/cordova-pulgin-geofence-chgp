@@ -30,7 +30,7 @@ public class GeoNotificationNotifier {
             .setLargeIcon(notification.getLargeIcon())
             .setStyle(NotificationCompat.BigPictureStyle()
                     .bigPicture(notification.getImage())
-                    .bigLargeIcon(null));
+                    .bigLargeIcon(null)
             )
             .setAutoCancel(true)
             .setContentTitle(notification.getTitle())
