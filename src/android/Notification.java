@@ -15,6 +15,7 @@ public class Notification {
     @Expose public String text;
     @Expose public long[] vibrate = new long[] { 1000 };
     @Expose public String icon = "";
+    @Expose public String image = "";
     @Expose public String smallIcon = "";
     @Expose public Object data;
     @Expose public boolean openAppOnClick;
@@ -58,6 +59,19 @@ public class Notification {
             bmp = assets.getIconFromUri(uri);
         } catch (Exception e){
             bmp = assets.getIconFromDrawable(this.icon);
+        }
+
+        return bmp;
+    }
+
+    public Bitmap getImage() {
+        Bitmap bmp;
+
+        try{
+            Uri uri = assets.parse(this.image);
+            bmp = assets.getIconFromUri(uri);
+        } catch (Exception e){
+            bmp = null;
         }
 
         return bmp;
