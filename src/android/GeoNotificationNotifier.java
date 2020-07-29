@@ -28,7 +28,7 @@ public class GeoNotificationNotifier {
             .setVibrate(notification.getVibrate())
             .setSmallIcon(notification.getSmallIcon())
             .setLargeIcon(notification.getLargeIcon())
-            .setStyle(NotificationCompat.BigPictureStyle()
+            .setStyle(new NotificationCompat.BigPictureStyle()
                     .bigPicture(notification.getImage())
                     .bigLargeIcon(null)
             )
