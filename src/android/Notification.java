@@ -72,7 +72,9 @@ public class Notification {
     public Bitmap getImage() {
         Bitmap bmp;
         String scheme;
-         try{
+        Log.i("PULSE", "Notification — uri.getScheme() 2"+ this.image);
+
+        try{
              Uri uri = assets.parse(this.image);
              Log.i("PULSE", "Notification — uri.getScheme() 1"+ this.image);
              scheme =uri.getScheme();
