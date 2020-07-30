@@ -14,6 +14,7 @@ public class GeoNotification {
     @Expose public String auth;
     @Expose public int frequency = 0;
     @Expose public int delay = 0;
+    @Expose public int ts = 0;
 
     @Expose public Notification notification;
 
