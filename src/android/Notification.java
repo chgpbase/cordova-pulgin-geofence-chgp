@@ -9,6 +9,7 @@ import android.util.Log;
 import java.net.URL;
 import java.net.HttpURLConnection;
 import java.io.InputStream;
+import android.os.AsyncTask;
 
 import com.google.gson.annotations.Expose;
 
@@ -34,6 +35,30 @@ public class Notification {
     @Expose public boolean happensOnce;
     @Expose public boolean notificationShowed = false;
 
+    private class GetUrlBitmap extends AsyncTask<String, Void, Bitmap> {
+        protected Bitmap doInBackground(String... Urls) {
+            logger.log(Log.DEBUG, "Geofence image "+Urls[0]);
+            try {
+                URL url = new URL(Urls[0]);
+                logger.log(Log.DEBUG, "Geofence 1 HttpURLConnection connection");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                logger.log(Log.DEBUG, "Geofence 1 connection.setDoInput(true);");
+                connection.setDoInput(true);
+                logger.log(Log.DEBUG, "Geofence 1 connection.connect();");
+                connection.connect();
+                logger.log(Log.DEBUG, "Geofence 1 connection.getInputStream();");
+                InputStream input = connection.getInputStream();
+                logger.log(Log.DEBUG, "Geofence 1 BitmapFactory.decodeStream(input);");
+                return BitmapFactory.decodeStream(input);
+                logger.log(Log.DEBUG, "Geofence 1 bmp ok");
+            } catch (Exception e) {
+                logger.log(Log.DEBUG, "Geofence 1 exception: " + e.getMessage());
+                logger.log(Log.DEBUG, "Geofence 1 exception: " + e.toString());
+                return null;
+            }
+        }
+    }
+
     public void setContext(Context context) {
         this.context = context;
         this.assets = AssetUtil.getInstance(context);
@@ -57,7 +82,7 @@ public class Notification {
         return resId;
     }
 
-    public Bitmap getLargeIcon() {
+        public Bitmap getLargeIcon() {
         Bitmap bmp;
 
         try{
@@ -87,27 +112,28 @@ public class Notification {
              switch (scheme) {
                  case "https":
                  case "http":
-                     try {
-                         logger.log(Log.DEBUG, "Geofence image "+this.image);
-
-                         URL url = new URL(this.image);
-                         logger.log(Log.DEBUG, "Geofence  HttpURLConnection connection");
-                         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                         logger.log(Log.DEBUG, "Geofence  connection.setDoInput(true);");
-                         connection.setDoInput(true);
-                         logger.log(Log.DEBUG, "Geofence  connection.connect();");
-                         connection.connect();
-                         logger.log(Log.DEBUG, "Geofence connection.getInputStream();");
-                         InputStream input = connection.getInputStream();
-                         logger.log(Log.DEBUG, "Geofence BitmapFactory.decodeStream(input);");
-                         bmp = BitmapFactory.decodeStream(input);
-                         logger.log(Log.DEBUG, "Geofence bmp ok");
-
-                     } catch (Exception e) {
-                         logger.log(Log.DEBUG, "Geofence exception: " + e.getMessage());
-                         logger.log(Log.DEBUG, "Geofence exception: " + e.toString());
-                         bmp = null;
-                     }
+//                     try {
+//                         logger.log(Log.DEBUG, "Geofence image "+this.image);
+//
+//                         URL url = new URL(this.image);
+//                         logger.log(Log.DEBUG, "Geofence  HttpURLConnection connection");
+//                         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//                         logger.log(Log.DEBUG, "Geofence  connection.setDoInput(true);");
+//                         connection.setDoInput(true);
+//                         logger.log(Log.DEBUG, "Geofence  connection.connect();");
+//                         connection.connect();
+//                         logger.log(Log.DEBUG, "Geofence connection.getInputStream();");
+//                         InputStream input = connection.getInputStream();
+//                         logger.log(Log.DEBUG, "Geofence BitmapFactory.decodeStream(input);");
+//                         bmp = BitmapFactory.decodeStream(input);
+//                         logger.log(Log.DEBUG, "Geofence bmp ok");
+//
+//                     } catch (Exception e) {
+//                         logger.log(Log.DEBUG, "Geofence exception: " + e.getMessage());
+//                         logger.log(Log.DEBUG, "Geofence exception: " + e.toString());
+//                         bmp = null;
+//                     }
+                     bmp = new GetUrlBitmap().execute(this.image);
                      break;
                  default:
                      try {
