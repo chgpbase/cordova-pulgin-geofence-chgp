@@ -219,8 +219,44 @@ function coerceProperties(geofence) {
             geofence.notification.smallIcon = geofence.notification.smallIcon.toString();
         }
 
+        if (geofence.notification.image) {
+            geofence.notification.image = geofence.notification.image.toString();
+        }
+
+        if (geofence.notification.deeplink) {
+            geofence.notification.deeplink = geofence.notification.deeplink.toString();
+        }
+
+        if (geofence.notification.dateStart) {
+            geofence.notification.dateStart = geofence.notification.dateStart.toString();
+        }
+
+        if (geofence.notification.dateEnd) {
+            geofence.notification.dateEnd = geofence.notification.dateEnd.toString();
+        }
+
+        if (geofence.notification.timeStart) {
+            geofence.notification.timeStart = geofence.notification.timeStart.toString();
+        }
+
+        if (geofence.notification.timeEnd) {
+            geofence.notification.timeEnd = geofence.notification.timeEnd.toString();
+        }
+
         if (geofence.notification.openAppOnClick) {
             geofence.notification.openAppOnClick = coerceBoolean("Geofence notification.openAppOnClick", geofence.notification.openAppOnClick);
+        }
+
+        if (geofence.notification.happensOnce) {
+            geofence.notification.happensOnce = coerceBoolean("Geofence notification.happensOnce", geofence.notification.happensOnce);
+        }
+
+        if (geofence.notification.happensOnce) {
+            geofence.notification.happensOnce = coerceBoolean("Geofence notification.happensOnce", geofence.notification.happensOnce);
+             }
+
+        if (geofence.notification.scenarioDayType) {
+            geofence.notification.scenarioDayType = coerceNumber("Geofence notification.scenarioDayType", geofence.notification.scenarioDayType);
         }
 
         if (geofence.notification.vibration) {
