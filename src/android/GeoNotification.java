@@ -2,7 +2,6 @@ package com.cowbell.cordova.geofence;
 
 import com.google.android.gms.location.Geofence;
 import com.google.gson.annotations.Expose;
-import java.util.*;
 
 public class GeoNotification {
     @Expose public String id;
@@ -13,7 +12,9 @@ public class GeoNotification {
     @Expose public boolean openedFromNotification;
     @Expose public String url;
     @Expose public String auth;
-    
+    @Expose public int frequency = 0;
+    @Expose public int delay = 0;
+
     @Expose public Notification notification;
 
     public GeoNotification() {
