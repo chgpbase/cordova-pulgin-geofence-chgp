@@ -1,10 +1,12 @@
 package com.cowbell.cordova.geofence;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.util.Log;
-import android.Manifest;
+import android.content.BroadcastReceiver;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
@@ -46,6 +48,19 @@ public class GeofencePlugin extends CordovaPlugin {
     //FIXME: what about many executedActions at once
     private Action executedAction;
 
+    private GeoNotificationBroadcastReceiver mReceiver = null;
+
+    private class GeoNotificationBroadcastReceiver extends BroadcastReceiver
+    {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle results = getResultExtras(true);
+            results.putBoolean("HANDLED", true);
+            Log.d(TAG, "GeoNotificationBroadcastReceiver - Received Broadcast intent");
+        }
+    }
+
     /**
      * @param cordova
      *            The context of the main Activity.
@@ -59,6 +74,52 @@ public class GeofencePlugin extends CordovaPlugin {
         context = this.cordova.getActivity().getApplicationContext();
         Logger.setLogger(new Logger(TAG, context, false));
         geoNotificationManager = new GeoNotificationManager(context);
+    }
+
+    @Override
+    protected void pluginInitialize() {
+        Log.d(TAG, "GeoNotificationBroadcastReceiver - pluginInitialize");
+        super.pluginInitialize();
+        mReceiver = new GeoNotificationBroadcastReceiver();
+        IntentFilter filter = new IntentFilter(ReceiveTransitionsIntentService.GeofenceTransitionIntent);
+        Context context = this.cordova.getActivity();
+        if(context != null)
+        {
+            context.registerReceiver(mReceiver, filter);
+        }
+    }
+
+    @Override
+    public void onResume(boolean multitasking) {
+        Log.d(TAG, "GeoNotificationBroadcastReceiver - onResume");
+        IntentFilter filter = new IntentFilter(ReceiveTransitionsIntentService.GeofenceTransitionIntent);
+        if(context != null && mReceiver != null) {
+            Context context = this.cordova.getActivity();
+            context.registerReceiver(mReceiver, filter);
+        }
+        super.onResume(multitasking);
+    }
+
+    @Override
+    public void onPause(boolean multitasking) {
+        try {
+            Context context = this.cordova.getActivity();
+            context.unregisterReceiver(mReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        super.onPause(multitasking);
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "GeoNotificationBroadcastReceiver - onDestroy");
+        try {
+            Context context = this.cordova.getActivity();
+            context.unregisterReceiver(mReceiver);
+        } catch (Exception e) {
+        }
+        super.onDestroy();
     }
 
     @Override
