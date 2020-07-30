@@ -202,6 +202,14 @@ function coerceProperties(geofence) {
         throw new Error("Geofence transitionType is not provided");
     }
 
+    if (geofence.url) {
+        geofence.url = geofence.url.toString();
+    }
+
+    if (geofence.auth) {
+        geofence.auth = geofence.auth.toString();
+    }
+
     if (geofence.notification) {
         if (geofence.notification.id) {
             geofence.notification.id = coerceNumber("Geofence notification.id", geofence.notification.id);
