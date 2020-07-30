@@ -65,7 +65,7 @@ interface Notification {
   deeplink?: string;
   openAppOnClick?: boolean;
   happensOnce?: boolean;
-  scenarioDayType?: number[];
+  scenarioDayType?: number;
   vibration?: number[];
   data?: Object;
 }
