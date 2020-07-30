@@ -74,9 +74,9 @@ public class Notification {
         String scheme;
          try{
              Uri uri = assets.parse(this.image);
+             Log.i("PULSE", "Notification — uri.getScheme() 1"+ this.image);
              scheme =uri.getScheme();
-             Log.i("PULSE", "Notification — ri.getScheme() " + scheme);
-
+             Log.i("PULSE", "Notification — uri.getScheme() " + scheme);
              switch (scheme) {
                  case "https":
                  case "http":
