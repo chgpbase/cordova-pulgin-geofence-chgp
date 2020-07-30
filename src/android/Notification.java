@@ -120,7 +120,7 @@ public class Notification {
     }
 
     public String toString() {
-        return "Notification title: " + getTitle() + " text: " + getText();
+        return "Notification title: " + getTitle() + " text: " + getText() + "image: "+this.image;
     }
 
     private long[] concat(long[] a, long[] b) {
