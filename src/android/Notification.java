@@ -3,6 +3,9 @@ package com.cowbell.cordova.geofence;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import java.net.URL;
+import java.net.URLConnection;
+import java.io.InputStream;
 
 import com.google.gson.annotations.Expose;
 
@@ -66,13 +69,24 @@ public class Notification {
 
     public Bitmap getImage() {
         Bitmap bmp;
-
-        try{
-            Uri uri = assets.parse(this.image);
-            bmp = assets.getIconFromUri(uri);
-        } catch (Exception e){
-            bmp = null;
-        }
+         try{
+             Uri uri = assets.parse(this.image);
+             switch (uri.getScheme()) {
+                 case "https":
+                 case "http":
+                     URL url = new URL(uri.toString());
+                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                     connection.setDoInput(true);
+                     connection.connect();
+                     InputStream input = connection.getInputStream();
+                     bmp = BitmapFactory.decodeStream(input);
+                     break;
+                 default:
+                     bmp = assets.getIconFromUri(uri);
+             }
+         } catch (Exception e){
+             bmp = assets.getIconFromDrawable(this.image);
+         }
 
         return bmp;
     }
