@@ -157,8 +157,13 @@ public class ReceiveTransitionsIntentService extends IntentService {
 
             Logger logger = Logger.getLogger();
             logger.log(Log.DEBUG, "ReceiveTransitionsIntentService - broadcast callback received.");
-
-            notifier = new GeoNotificationNotifier((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE), context);
+            notifier = new GeoNotificationNotifier(
+                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE),
+                this
+            );
+//            notifier = new GeoNotificationNotifier(
+//                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE), 
+//                    context);
 
             // First check for errors
             GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(this.googleTransitionIntent);
