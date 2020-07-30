@@ -48,6 +48,10 @@ interface Geofence {
   longitude: number;
   radius: number;
   transitionType: number;
+  url?: string;
+  auth?: string;
+  frequency?: number;
+  delay?: number;
   notification?: Notification;
 }
 
