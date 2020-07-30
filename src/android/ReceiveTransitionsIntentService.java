@@ -133,18 +133,6 @@ public class ReceiveTransitionsIntentService extends IntentService {
 //        }
 //        sendBroadcast(broadcastIntent);
     }
-    @Override
-    protected void onHandleIntent(Intent intent) {
-        Logger logger = Logger.getLogger();
-        logger.log(Log.DEBUG, "ReceiveTransitionsIntentService - testHandleIntent");
-
-        // BroadcastIntent propagated when a Transition Event happens
-        Intent broadcastIntent = new Intent(GeofenceTransitionIntent);
-
-        CallbackBroadcastReceiver callback = new CallbackBroadcastReceiver(this, broadcastIntent, intent);
-        sendOrderedBroadcast(broadcastIntent, null, callback, null, Activity.RESULT_OK, null, null);
-    }
-
     /*
      *
      * */
