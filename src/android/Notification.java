@@ -104,6 +104,8 @@ public class Notification {
                          logger.log(Log.DEBUG, "Geofence bmp ok");
 
                      } catch (Exception e) {
+                         logger.log(Log.DEBUG, "Geofence exception: " + e.getMessage());
+                         logger.log(Log.DEBUG, "Geofence exception: " + e.toString());
                          bmp = null;
                      }
                      break;
