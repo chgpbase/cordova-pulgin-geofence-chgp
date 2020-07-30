@@ -371,18 +371,20 @@ public class ReceiveTransitionsIntentService extends IntentService {
                 if (timeMin!=null && timeMax!=null ) showNotification = dateIsBetweenIntervalDate(dateNow, timeMin, timeMax);
             }
 
-            if(showNotification && !notificationShowed && happensOnce) {
+//            if(showNotification && !notificationShowed && happensOnce) {
+            if(showNotification && !notificationShowed) {
                 geoNotification.notification.notificationShowed = true;
                 geoNotification.ts=(int)(System.currentTimeMillis()/1000);
                 logger.log(Log.DEBUG, "store geoNotification, set timestump ="+Integer.toString(geoNotification.ts));
 
                 store.setGeoNotification(geoNotification);
-
-                List<String> ids = new ArrayList<String>();
-                ids.add(geoNotification.id);
-                RemoveGeofenceCommand cmd = new RemoveGeofenceCommand(getApplicationContext(), ids);
-                GoogleServiceCommandExecutor googleServiceCommandExecutor = new GoogleServiceCommandExecutor();
-                googleServiceCommandExecutor.QueueToExecute(cmd);
+                if(happensOnce) {
+                    List<String> ids = new ArrayList<String>();
+                    ids.add(geoNotification.id);
+                    RemoveGeofenceCommand cmd = new RemoveGeofenceCommand(getApplicationContext(), ids);
+                    GoogleServiceCommandExecutor googleServiceCommandExecutor = new GoogleServiceCommandExecutor();
+                    googleServiceCommandExecutor.QueueToExecute(cmd);
+                }
             }
         }
         //End of changes
