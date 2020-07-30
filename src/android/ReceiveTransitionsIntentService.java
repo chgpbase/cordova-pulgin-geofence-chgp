@@ -2,6 +2,7 @@ package com.cowbell.cordova.geofence;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
