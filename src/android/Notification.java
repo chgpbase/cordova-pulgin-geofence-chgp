@@ -74,7 +74,9 @@ public class Notification {
         Bitmap bmp;
         Uri uri;
         String scheme;
-            try{
+        Logger logger = Logger.getLogger();
+
+        try{
                 uri = Uri.parse(this.image);
                 scheme = uri.getScheme();
             } catch (Exception e){
