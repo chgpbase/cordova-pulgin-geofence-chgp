@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.content.BroadcastReceiver;
 
 import android.os.Bundle;
 
@@ -56,9 +57,9 @@ public class ReceiveTransitionsIntentService extends IntentService {
         // First check for errors
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
 
-        Bundle results = getResultExtras(true);
-        boolean handled = results.getBoolean("HANDLED");
-
+//        Bundle results = intent.getResultExtras(true);
+//        boolean handled = results.getBoolean("HANDLED");
+        boolean handled=false;
         if (geofencingEvent.hasError()) {
             // Get the error code with a static method
             int errorCode = geofencingEvent.getErrorCode();
