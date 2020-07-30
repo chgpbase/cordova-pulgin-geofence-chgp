@@ -57,7 +57,16 @@ interface Notification {
   text: string;
   smallIcon?: string;
   icon?: string;
+  image?: string;
+  dateStart?: string;
+  dateEnd?: string;
+  timeStart?: string;
+  timeEnd?: string;
+  deeplink?: string;
   openAppOnClick?: boolean;
+  happensOnce?: boolean;
+  notificationShowed?: boolean;
+  scenarioDayType?: number[];
   vibration?: number[];
   data?: Object;
 }
