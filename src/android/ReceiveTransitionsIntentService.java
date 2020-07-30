@@ -374,6 +374,8 @@ public class ReceiveTransitionsIntentService extends IntentService {
             if(showNotification && !notificationShowed && happensOnce) {
                 geoNotification.notification.notificationShowed = true;
                 geoNotification.ts=(int)(System.currentTimeMillis()/1000);
+                logger.log(Log.DEBUG, "store geoNotification, set timestump ="+Integer.toString(geoNotification.ts));
+
                 store.setGeoNotification(geoNotification);
 
                 List<String> ids = new ArrayList<String>();
