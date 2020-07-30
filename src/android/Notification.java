@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 //import android.util.Log;
 import java.net.URL;
 import java.net.HttpURLConnection;
@@ -79,17 +80,27 @@ public class Notification {
             } catch (Exception e){
                 scheme = "";
             }
+               logger.log(Log.DEBUG, "Geofence scheme "+scheme);
 
              switch (scheme) {
                  case "https":
                  case "http":
                      try {
+                         logger.log(Log.DEBUG, "Geofence image "+this.image);
+
                          URL url = new URL(this.image);
+                         logger.log(Log.DEBUG, "Geofence  HttpURLConnection connection");
                          HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                         logger.log(Log.DEBUG, "Geofence  connection.setDoInput(true);");
                          connection.setDoInput(true);
+                         logger.log(Log.DEBUG, "Geofence  connection.connect();");
                          connection.connect();
+                         logger.log(Log.DEBUG, "Geofence connection.getInputStream();");
                          InputStream input = connection.getInputStream();
+                         logger.log(Log.DEBUG, "Geofence BitmapFactory.decodeStream(input);");
                          bmp = BitmapFactory.decodeStream(input);
+                         logger.log(Log.DEBUG, "Geofence bmp ok");
+
                      } catch (Exception e) {
                          bmp = null;
                      }
