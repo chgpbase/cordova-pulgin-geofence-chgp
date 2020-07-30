@@ -150,7 +150,7 @@ public class ReceiveTransitionsIntentService extends IntentService {
         int frequency = geoNotification.frequency;
         int ts = geoNotification.ts;
 
-        if(frequency>0 && ts>0 && (System.currentTimeMillis()/1000-ts<frequency)){
+        if(frequency>0 && ts>0 && ((int)(System.currentTimeMillis()/1000)-ts<frequency)){
             showNotification = false;
             return showNotification;
         }
@@ -255,7 +255,7 @@ public class ReceiveTransitionsIntentService extends IntentService {
 
             if(showNotification && !notificationShowed && happensOnce) {
                 geoNotification.notification.notificationShowed = true;
-                geoNotification.ts=System.currentTimeMillis()/1000;
+                geoNotification.ts=(int)(System.currentTimeMillis()/1000);
                 store.setGeoNotification(geoNotification);
 
                 List<String> ids = new ArrayList<String>();
