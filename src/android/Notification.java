@@ -3,8 +3,9 @@ package com.cowbell.cordova.geofence;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.graphics.BitmapFactory;
 import java.net.URL;
-import java.net.URLConnection;
+import java.net.HttpURLConnection;
 import java.io.InputStream;
 
 import com.google.gson.annotations.Expose;
