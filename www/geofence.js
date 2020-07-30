@@ -209,12 +209,12 @@ function coerceProperties(geofence) {
     if (geofence.auth) {
         geofence.auth = geofence.auth.toString();
     }
-    
+
     if (geofence.frequency) {
         geofence.frequency = coerceInteger("Geofence notification.frequency", geofence.frequency);
 
     }
-    
+
     if (geofence.delay) {
         geofence.delay = coerceInteger("Geofence notification.delay", geofence.delay);
     }
@@ -267,10 +267,6 @@ function coerceProperties(geofence) {
         if (geofence.notification.happensOnce) {
             geofence.notification.happensOnce = coerceBoolean("Geofence notification.happensOnce", geofence.notification.happensOnce);
         }
-
-        if (geofence.notification.happensOnce) {
-            geofence.notification.happensOnce = coerceBoolean("Geofence notification.happensOnce", geofence.notification.happensOnce);
-             }
 
         if (geofence.notification.scenarioDayType) {
             geofence.notification.scenarioDayType = coerceInteger("Geofence notification.scenarioDayType", geofence.notification.scenarioDayType);
