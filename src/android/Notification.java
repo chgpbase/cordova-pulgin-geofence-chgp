@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.graphics.BitmapFactory;
-import android.util.Log;
+//import android.util.Log;
 import java.net.URL;
 import java.net.HttpURLConnection;
 import java.io.InputStream;
@@ -73,7 +73,6 @@ public class Notification {
         Bitmap bmp;
         Uri uri;
         String scheme;
-        Log.i("PULSE", "Notification — uri.getScheme() 2"+ this.image);
             try{
                 uri = Uri.parse(this.image);
                 scheme = uri.getScheme();
@@ -81,33 +80,24 @@ public class Notification {
                 scheme = "";
             }
 
-             Log.i("PULSE", "Notification — uri.getScheme() " + scheme);
              switch (scheme) {
                  case "https":
                  case "http":
                      try {
-                         Log.i("PULSE", "URL prepear");
                          URL url = new URL(this.image);
-                         Log.i("PULSE", "HttpURLConnection connection");
                          HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                          connection.setDoInput(true);
-                         Log.i("PULSE", "connect");
                          connection.connect();
-                         Log.i("PULSE", "getInputStream");
                          InputStream input = connection.getInputStream();
-                         Log.i("PULSE", "decodeStream");
                          bmp = BitmapFactory.decodeStream(input);
-                         Log.i("PULSE", "get URL image ok");
                      } catch (Exception e) {
                          bmp = null;
                      }
                      break;
                  default:
                      try {
-                         Log.i("PULSE", "get URI (default)");
                          uri = assets.parse(this.image);
                          bmp = assets.getIconFromUri(uri);
-                         Log.i("PULSE", "get URI image ok");
                      } catch (Exception e){
                         bmp = assets.getIconFromDrawable(this.image);
                      }
