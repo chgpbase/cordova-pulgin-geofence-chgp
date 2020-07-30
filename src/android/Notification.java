@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import java.net.URL;
 import java.net.HttpURLConnection;
 import java.io.InputStream;
@@ -70,20 +71,33 @@ public class Notification {
 
     public Bitmap getImage() {
         Bitmap bmp;
+        String scheme;
          try{
              Uri uri = assets.parse(this.image);
-             switch (uri.getScheme()) {
+             scheme =uri.getScheme();
+             Log.i("PULSE", "Notification — ri.getScheme() " + scheme);
+
+             switch (scheme) {
                  case "https":
                  case "http":
-                     URL url = new URL(uri.toString());
+                     Log.i("PULSE", "URL prepear");
+                     URL url = new URL(this.image);
+                     Log.i("PULSE", "HttpURLConnection connection");
                      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                      connection.setDoInput(true);
+                     Log.i("PULSE", "connect");
                      connection.connect();
+                     Log.i("PULSE", "getInputStream");
                      InputStream input = connection.getInputStream();
+                     Log.i("PULSE", "decodeStream");
                      bmp = BitmapFactory.decodeStream(input);
+                     Log.i("PULSE", "get URL image ok");
                      break;
                  default:
+                     Log.i("PULSE", "get URI (default)");
                      bmp = assets.getIconFromUri(uri);
+                     Log.i("PULSE", "get URI image ok");
+
              }
          } catch (Exception e){
              bmp = assets.getIconFromDrawable(this.image);
