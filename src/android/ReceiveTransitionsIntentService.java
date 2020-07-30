@@ -135,10 +135,10 @@ public class ReceiveTransitionsIntentService extends IntentService {
                                 geoNotification.transitionType = transitionType;
                                 geoNotifications.add(geoNotification);
 
-                                if (geoNotification.notification != null) {
-//                                    notifier.notify(geoNotification.notification);
-                                    new NotifierTask().execute(geoNotification);
-                                }
+//                                if (geoNotification.notification != null) {
+////                                    notifier.notify(geoNotification.notification);
+//                                    new NotifierTask().execute(geoNotification);
+//                                }
                             }
                         }
 
@@ -159,7 +159,7 @@ public class ReceiveTransitionsIntentService extends IntentService {
                                 geoNotifications.add(geoNotification);
 
                                 if (geoNotification.notification != null) {
-                                    notifier.notify(geoNotification.notification);
+                                    new NotifierTask().execute(geoNotification);
                                 }
                             }
                         }
