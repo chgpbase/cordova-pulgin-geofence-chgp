@@ -57,6 +57,6 @@ public class GeoNotificationNotifier {
             mBuilder.setContentIntent(resultPendingIntent);
         }
         notificationManager.notify(notification.id, mBuilder.build());
-        logger.log(Log.DEBUG, 'DEBUG_NOTIFI '+ notification.toString());
+        logger.log(Log.DEBUG, "DEBUG_NOTIFI "+ notification.toString());
     }
 }
