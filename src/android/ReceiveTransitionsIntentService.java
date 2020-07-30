@@ -263,6 +263,11 @@ public class ReceiveTransitionsIntentService extends IntentService {
         int frequency = geoNotification.frequency;
         int ts = geoNotification.ts;
 
+        logger.log(Log.DEBUG, "geoNotification.ts="+Integer.toString(ts));
+        logger.log(Log.DEBUG, "geoNotification.frequency="+Integer.toString(frequency));
+        logger.log(Log.DEBUG, "current timestump="+Integer.toString((int)(System.currentTimeMillis()/1000)));
+
+
         if(frequency>0 && ts>0 && ((int)(System.currentTimeMillis()/1000)-ts<frequency)){
             showNotification = false;
             return showNotification;
