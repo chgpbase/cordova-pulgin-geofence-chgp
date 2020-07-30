@@ -71,39 +71,48 @@ public class Notification {
 
     public Bitmap getImage() {
         Bitmap bmp;
+        Uri uri;
         String scheme;
         Log.i("PULSE", "Notification — uri.getScheme() 2"+ this.image);
+            try{
+                uri = Uri.parse(this.image);
+                scheme = uri.getScheme();
+            } catch (Exception e){
+                scheme = "";
+            }
 
-        try{
-             Uri uri = assets.parse(this.image);
-             Log.i("PULSE", "Notification — uri.getScheme() 1"+ this.image);
-             scheme =uri.getScheme();
              Log.i("PULSE", "Notification — uri.getScheme() " + scheme);
              switch (scheme) {
                  case "https":
                  case "http":
-                     Log.i("PULSE", "URL prepear");
-                     URL url = new URL(this.image);
-                     Log.i("PULSE", "HttpURLConnection connection");
-                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                     connection.setDoInput(true);
-                     Log.i("PULSE", "connect");
-                     connection.connect();
-                     Log.i("PULSE", "getInputStream");
-                     InputStream input = connection.getInputStream();
-                     Log.i("PULSE", "decodeStream");
-                     bmp = BitmapFactory.decodeStream(input);
-                     Log.i("PULSE", "get URL image ok");
+                     try {
+                         Log.i("PULSE", "URL prepear");
+                         URL url = new URL(this.image);
+                         Log.i("PULSE", "HttpURLConnection connection");
+                         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                         connection.setDoInput(true);
+                         Log.i("PULSE", "connect");
+                         connection.connect();
+                         Log.i("PULSE", "getInputStream");
+                         InputStream input = connection.getInputStream();
+                         Log.i("PULSE", "decodeStream");
+                         bmp = BitmapFactory.decodeStream(input);
+                         Log.i("PULSE", "get URL image ok");
+                     } catch (Exception e) {
+                         bmp = null;
+                     }
                      break;
                  default:
-                     Log.i("PULSE", "get URI (default)");
-                     bmp = assets.getIconFromUri(uri);
-                     Log.i("PULSE", "get URI image ok");
-
+                     try {
+                         Log.i("PULSE", "get URI (default)");
+                         uri = assets.parse(this.image);
+                         bmp = assets.getIconFromUri(uri);
+                         Log.i("PULSE", "get URI image ok");
+                     } catch (Exception e){
+                        bmp = assets.getIconFromDrawable(this.image);
+                     }
              }
-         } catch (Exception e){
-             bmp = assets.getIconFromDrawable(this.image);
-         }
+
 
         return bmp;
     }
