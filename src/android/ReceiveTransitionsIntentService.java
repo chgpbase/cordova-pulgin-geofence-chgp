@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import android.os.Bundle;
+
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 
@@ -53,6 +55,10 @@ public class ReceiveTransitionsIntentService extends IntentService {
         // TODO: refactor this, too long
         // First check for errors
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
+
+        Bundle results = getResultExtras(true);
+        boolean handled = results.getBoolean("HANDLED");
+
         if (geofencingEvent.hasError()) {
             // Get the error code with a static method
             int errorCode = geofencingEvent.getErrorCode();
@@ -68,25 +74,52 @@ public class ReceiveTransitionsIntentService extends IntentService {
                 logger.log(Log.DEBUG, "Geofence transition detected");
                 List<Geofence> triggerList = geofencingEvent.getTriggeringGeofences();
                 List<GeoNotification> geoNotifications = new ArrayList<GeoNotification>();
-                for (Geofence fence : triggerList) {
-                    String fenceId = fence.getRequestId();
-                    GeoNotification geoNotification = store
-                            .getGeoNotification(fenceId);
 
-                    if (geoNotification != null && validateTimeInterval(geoNotification)) {
-                        geoNotification.openedFromNotification = true;
-                        if (geoNotification.notification != null) {
-                            notifier.notify(geoNotification.notification);
+                if (handled) {
+                    boolean showNotification = false;
+                    // The application is up and running so we want to notify directly into the
+                    // webview
+                    for (Geofence fence : triggerList) {
+                        String fenceId = fence.getRequestId();
+                        GeoNotification geoNotification = store
+                                .getGeoNotification(fenceId);
+
+                        showNotification = validateTimeInterval(geoNotification);
+
+                        if (geoNotification != null) {
+                            geoNotification.openedFromNotification = false;
+                            geoNotification.transitionType = transitionType;
+                            geoNotifications.add(geoNotification);
                         }
-                        geoNotification.transitionType = transitionType;
-                        geoNotifications.add(geoNotification);
                     }
+
+                    if (geoNotifications.size() > 0) {
+                        broadcastIntent.putExtra("transitionData", Gson.get().toJson(geoNotifications));
+                        GeofencePlugin.onTransitionReceived(geoNotifications);
+                    }
+
+                } else {
+                    for (Geofence fence : triggerList) {
+                        String fenceId = fence.getRequestId();
+                        GeoNotification geoNotification = store
+                                .getGeoNotification(fenceId);
+
+                        if (geoNotification != null && validateTimeInterval(geoNotification)) {
+                            geoNotification.openedFromNotification = true;
+                            geoNotification.transitionType = transitionType;
+                            geoNotifications.add(geoNotification);
+                            if (geoNotification.notification != null) {
+                                notifier.notify(geoNotification.notification);
+                            }
+                        }
+                    }
+
+//                    if (geoNotifications.size() > 0) {
+//                        broadcastIntent.putExtra("transitionData", Gson.get().toJson(geoNotifications));
+//                        GeofencePlugin.onTransitionReceived(geoNotifications);
+//                    }
                 }
 
-                if (geoNotifications.size() > 0) {
-                    broadcastIntent.putExtra("transitionData", Gson.get().toJson(geoNotifications));
-                    GeofencePlugin.onTransitionReceived(geoNotifications);
-                }
             } else {
                 String error = "Geofence transition error: " + transitionType;
                 logger.log(Log.ERROR, error);
@@ -112,6 +145,14 @@ public class ReceiveTransitionsIntentService extends IntentService {
         String timedayEnd = geoNotification.notification.timeEnd;
         int scenarioDay = geoNotification.notification.scenarioDayType;
         boolean notificationShowed = geoNotification.notification.notificationShowed;
+        int delay = geoNotification.delay;
+        int frequency = geoNotification.frequency;
+        int ts = geoNotification.ts;
+
+        if(frequency>0 && ts>0 && (System.currentTimeMillis()/1000-ts<frequency)){
+            showNotification = false;
+            return showNotification;
+        }
 
         if(notificationShowed && happensOnce){
             showNotification = false;
