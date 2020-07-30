@@ -209,6 +209,15 @@ function coerceProperties(geofence) {
     if (geofence.auth) {
         geofence.auth = geofence.auth.toString();
     }
+    
+    if (geofence.frequency) {
+        geofence.frequency = coerceInteger("Geofence notification.frequency", geofence.frequency);
+
+    }
+    
+    if (geofence.delay) {
+        geofence.delay = coerceInteger("Geofence notification.delay", geofence.delay);
+    }
 
     if (geofence.notification) {
         if (geofence.notification.id) {
@@ -264,7 +273,7 @@ function coerceProperties(geofence) {
              }
 
         if (geofence.notification.scenarioDayType) {
-            geofence.notification.scenarioDayType = coerceNumber("Geofence notification.scenarioDayType", geofence.notification.scenarioDayType);
+            geofence.notification.scenarioDayType = coerceInteger("Geofence notification.scenarioDayType", geofence.notification.scenarioDayType);
         }
 
         if (geofence.notification.vibration) {
